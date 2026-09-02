@@ -24,7 +24,7 @@ export const Route = createFileRoute("/settings")({
   component: SettingsPage,
 });
 
-const PREF_KEY = "taskflow-prefs";
+const PREF_KEY = "alora-lola-prefs";
 
 type Prefs = {
   dailyDigest: boolean;

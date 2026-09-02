@@ -19,7 +19,7 @@ export type Task = {
   category?: string;
 };
 
-const STORAGE_KEY = "taskflow-tasks";
+const STORAGE_KEY = "alora-lola-tasks";
 
 function today(hour: number, minute = 0) {
   const d = new Date();

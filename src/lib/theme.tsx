@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 
 type Theme = "dark" | "light";
 
-const STORAGE_KEY = "taskflow-theme";
+const STORAGE_KEY = "alora-lola-theme";
 
 const ThemeContext = createContext<{ theme: Theme; setTheme: (t: Theme) => void; toggle: () => void }>({
   theme: "dark",
