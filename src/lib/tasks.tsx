@@ -72,11 +72,6 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const persist = useCallback((next: Task[]) => {
-    setTasks(next);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  }, []);
-
   const addTask = useCallback(
     (t: Omit<Task, "id">) => {
       setTasks((prev) => {
@@ -149,5 +144,3 @@ export function formatDue(due: string) {
   const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   return isToday ? `Today · ${time}` : `${d.toLocaleDateString([], { month: "short", day: "numeric" })} · ${time}`;
 }
-
-export { persistKeyUnused as _unused } from "./noop";
