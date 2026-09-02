@@ -24,7 +24,7 @@ export const Route = createFileRoute("/settings")({
   component: SettingsPage,
 });
 
-const PREF_KEY = "taskflow-prefs";
+const PREF_KEY = "alora-lola-prefs";
 
 type Prefs = {
   dailyDigest: boolean;
@@ -215,7 +215,7 @@ function SettingsPage() {
             </label>
             <button
               onClick={() => {
-                window.localStorage.removeItem("taskflow-tasks");
+                window.localStorage.removeItem("alora-lola-tasks");
                 window.location.reload();
               }}
               className="rounded-xl border border-rose/40 px-4 py-2 text-sm font-medium text-rose transition-colors hover:bg-rose/10"

@@ -1,8 +1,8 @@
-# FlowState AI
+# Alora Lola
 
 Build an AI Productivity Assistant Web Application
 
-Create a modern, professional, responsive AI-powered workplace productivity application called TaskFlow AI.
+Create a modern, professional, responsive AI-powered workplace productivity application called Alora Lola.
 
 The application should feel like a real productivity platform that could be used by employees, students, or professionals to manage their work and get assistance from AI.
 
@@ -105,7 +105,7 @@ Settings
 
 The currently selected page should be visually highlighted.
 
-Include the TaskFlow AI logo/name at the top of the sidebar.
+Include the Alora Lola logo/name at the top of the sidebar.
 
 4. My Tasks Page
 
@@ -205,7 +205,7 @@ User:
 Support chatbot:
 "Let's troubleshoot that. First, check that you've entered a task name. If the problem continues, try refreshing the page."
 
-The support chatbot should be clearly labelled TaskFlow Support so users understand that it is different from the main productivity AI assistant.
+The support chatbot should be clearly labelled Alora Lola Support so users understand that it is different from the main productivity AI assistant.
 
 If the chatbot cannot solve an issue, it should provide a helpful message such as:
 
