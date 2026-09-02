@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/tasks")({
   head: () => ({
     meta: [
-      { title: "My Tasks — TaskFlow AI" },
+      { title: "My Tasks — Alora Lola" },
       {
         name: "description",
-        content: "Create, edit, prioritise and complete your work tasks in TaskFlow AI.",
+        content: "Create, edit, prioritise and complete your work tasks in Alora Lola.",
       },
-      { property: "og:title", content: "My Tasks — TaskFlow AI" },
+      { property: "og:title", content: "My Tasks — Alora Lola" },
       {
         property: "og:description",
         content: "Create, edit, prioritise and complete your work tasks.",

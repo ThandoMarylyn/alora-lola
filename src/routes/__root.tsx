@@ -79,11 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TaskFlow AI — AI Productivity Workspace" },
+      { title: "Alora Lola — AI-Powered Productivity Assistant" },
       {
         name: "description",
         content:
-          "TaskFlow AI is an AI-powered productivity workspace for tasks, insights and workplace assistance.",
+          "Alora Lola is an AI-powered productivity assistant for tasks, insights and workplace assistance.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

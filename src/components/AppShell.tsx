@@ -70,11 +70,11 @@ function Brand() {
   return (
     <div className="flex items-center gap-3">
       <div className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-brand to-violet font-display text-lg font-extrabold text-white">
-        T
+        A
       </div>
       <div className="leading-tight">
-        <p className="font-display text-[15px] font-bold tracking-tight">TaskFlow AI</p>
-        <p className="text-[11px] text-muted-foreground">Productivity Console</p>
+        <p className="font-display text-[15px] font-bold tracking-tight">Alora Lola</p>
+        <p className="text-[11px] text-muted-foreground">AI-Powered Productivity Assistant</p>
       </div>
     </div>
   );

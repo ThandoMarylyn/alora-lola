@@ -9,13 +9,13 @@ import { useTasks } from "@/lib/tasks";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dashboard — TaskFlow AI" },
+      { title: "Dashboard — Alora Lola" },
       {
         name: "description",
         content:
-          "Your daily productivity overview: completed tasks, priorities, productivity score and AI recommendations.",
+          "Your daily productivity overview in Alora Lola: completed tasks, priorities, productivity score and AI recommendations.",
       },
-      { property: "og:title", content: "Dashboard — TaskFlow AI" },
+      { property: "og:title", content: "Dashboard — Alora Lola" },
       {
         property: "og:description",
         content: "Daily productivity overview with AI-generated recommendations.",

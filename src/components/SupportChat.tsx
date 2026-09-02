@@ -79,7 +79,7 @@ export function SupportChat() {
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "support",
-      text: "Hi, I'm TaskFlow Support — an automated assistant for platform problems. Ask me about tasks, navigation, themes or settings.",
+      text: "Hi, I'm Alora Lola Support — an automated assistant for platform problems. Ask me about tasks, navigation, themes or settings.",
     },
   ]);
   const endRef = useRef<HTMLDivElement>(null);
@@ -110,7 +110,7 @@ export function SupportChat() {
                 S
               </span>
               <div className="leading-tight">
-                <p className="text-sm font-semibold">TaskFlow Support</p>
+                <p className="text-sm font-semibold">Alora Lola Support</p>
                 <p className="text-[10px] text-mint">Automated platform help</p>
               </div>
             </div>
@@ -138,7 +138,7 @@ export function SupportChat() {
             ))}
             {typing ? (
               <div className="max-w-[60%] rounded-2xl rounded-bl-sm bg-panel-2 px-3 py-2 text-xs text-muted-foreground">
-                <span className="glow-dot">TaskFlow Support is typing…</span>
+                <span className="glow-dot">Alora Lola Support is typing…</span>
               </div>
             ) : null}
             <div ref={endRef} />
@@ -167,7 +167,7 @@ export function SupportChat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Describe your problem…"
-                aria-label="Message TaskFlow Support"
+                aria-label="Message Alora Lola Support"
                 className="min-w-0 flex-1 rounded-xl border border-border bg-background px-3 py-2 text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
               <button
@@ -187,11 +187,11 @@ export function SupportChat() {
 
       <button
         onClick={() => setOpen((o) => !o)}
-        aria-label="Open TaskFlow Support"
+        aria-label="Open Alora Lola Support"
         className="fixed right-5 bottom-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-br from-brand to-violet px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:opacity-90"
       >
         <LifeBuoy className="size-4" />
-        <span className="hidden sm:inline">TaskFlow Support</span>
+        <span className="hidden sm:inline">Alora Lola Support</span>
       </button>
     </>
   );
