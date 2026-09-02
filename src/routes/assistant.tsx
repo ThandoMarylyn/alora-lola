@@ -9,13 +9,13 @@ import { formatDue, useTasks } from "@/lib/tasks";
 export const Route = createFileRoute("/assistant")({
   head: () => ({
     meta: [
-      { title: "AI Assistant — TaskFlow AI" },
+      { title: "AI Assistant — Alora Lola" },
       {
         name: "description",
         content:
-          "Ask the TaskFlow AI assistant to prioritise tasks, plan your workday or draft professional messages.",
+          "Ask the Alora Lola AI assistant to prioritise tasks, plan your workday or draft professional messages.",
       },
-      { property: "og:title", content: "AI Assistant — TaskFlow AI" },
+      { property: "og:title", content: "AI Assistant — Alora Lola" },
       {
         property: "og:description",
         content: "Prioritise tasks, plan your workday and draft messages with AI.",
@@ -39,7 +39,7 @@ const SUGGESTIONS = [
 const WELCOME: Msg = {
   role: "assistant",
   content:
-    "I'm the TaskFlow AI assistant. I can prioritise your tasks, plan your day, summarise your workload or help you draft professional messages. What would you like to work on?",
+    "I'm the Alora Lola AI assistant. I can prioritise your tasks, plan your day, summarise your workload or help you draft professional messages. What would you like to work on?",
 };
 
 function AssistantPage() {
@@ -96,7 +96,7 @@ function AssistantPage() {
   };
 
   return (
-    <AppShell title="AI Assistant" subtitle="Workplace productivity support">
+    <AppShell title="AI Assistant" subtitle="AI-Powered Productivity Assistant">
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-panel px-4 py-3">
           <div className="flex items-center gap-2.5">
@@ -104,7 +104,7 @@ function AssistantPage() {
               <Bot className="size-4" />
             </span>
             <div className="leading-tight">
-              <p className="text-sm font-semibold">TaskFlow AI Assistant</p>
+              <p className="text-sm font-semibold">Alora Lola AI Assistant</p>
               <p className="text-[11px] text-muted-foreground">AI-generated responses</p>
             </div>
           </div>

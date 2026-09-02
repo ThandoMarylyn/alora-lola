@@ -9,13 +9,13 @@ import { useTasks } from "@/lib/tasks";
 export const Route = createFileRoute("/insights")({
   head: () => ({
     meta: [
-      { title: "Productivity Insights — TaskFlow AI" },
+      { title: "Productivity Insights — Alora Lola" },
       {
         name: "description",
         content:
-          "Weekly and monthly completion trends, productivity score and AI recommendations based on your tasks.",
+          "Weekly and monthly completion trends, productivity score and AI recommendations based on your tasks in Alora Lola.",
       },
-      { property: "og:title", content: "Productivity Insights — TaskFlow AI" },
+      { property: "og:title", content: "Productivity Insights — Alora Lola" },
       {
         property: "og:description",
         content: "Completion trends, productivity score and AI recommendations.",

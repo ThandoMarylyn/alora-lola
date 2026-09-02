@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — TaskFlow AI" },
+      { title: "Settings — Alora Lola" },
       {
         name: "description",
-        content: "Manage appearance, notification, AI and account preferences in TaskFlow AI.",
+        content: "Manage appearance, notification, AI and account preferences in Alora Lola.",
       },
-      { property: "og:title", content: "Settings — TaskFlow AI" },
+      { property: "og:title", content: "Settings — Alora Lola" },
       {
         property: "og:description",
         content: "Appearance, notification, AI and account preferences.",
