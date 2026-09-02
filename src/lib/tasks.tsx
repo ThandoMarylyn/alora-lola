@@ -1,0 +1,153 @@
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+
+export type Priority = "high" | "medium" | "low";
+
+export type Task = {
+  id: string;
+  title: string;
+  priority: Priority;
+  due: string; // ISO datetime-local string e.g. 2026-09-02T14:00
+  completed: boolean;
+  category?: string;
+};
+
+const STORAGE_KEY = "taskflow-tasks";
+
+function today(hour: number, minute = 0) {
+  const d = new Date();
+  d.setHours(hour, minute, 0, 0);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+const SAMPLE_TASKS: Task[] = [
+  { id: "t1", title: "Complete project report", priority: "high", due: today(15), completed: true, category: "Reporting" },
+  { id: "t2", title: "Respond to client emails", priority: "medium", due: today(11, 30), completed: true, category: "Inbox" },
+  { id: "t3", title: "Prepare presentation", priority: "high", due: today(14), completed: false, category: "Slides" },
+  { id: "t4", title: "Attend team meeting", priority: "low", due: today(16), completed: false, category: "Meeting" },
+  { id: "t5", title: "Review weekly performance", priority: "medium", due: today(17, 30), completed: false, category: "Analytics" },
+  { id: "t6", title: "Submit project documentation", priority: "medium", due: today(18), completed: false, category: "Docs" },
+];
+
+type TaskContextValue = {
+  tasks: Task[];
+  addTask: (t: Omit<Task, "id">) => void;
+  updateTask: (id: string, patch: Partial<Omit<Task, "id">>) => void;
+  deleteTask: (id: string) => void;
+  toggleTask: (id: string) => void;
+  stats: {
+    completed: number;
+    remaining: number;
+    highPriority: number;
+    score: number;
+    completionRate: number;
+    highPriorityDone: number;
+    highPriorityTotal: number;
+    overdue: Task[];
+  };
+};
+
+const TaskContext = createContext<TaskContextValue | null>(null);
+
+export function TaskProvider({ children }: { children: ReactNode }) {
+  const [tasks, setTasks] = useState<Task[]>(SAMPLE_TASKS);
+
+  useEffect(() => {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as Task[];
+        if (Array.isArray(parsed)) setTasks(parsed);
+      } catch {
+        /* keep sample data */
+      }
+    }
+  }, []);
+
+  const persist = useCallback((next: Task[]) => {
+    setTasks(next);
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  }, []);
+
+  const addTask = useCallback(
+    (t: Omit<Task, "id">) => {
+      setTasks((prev) => {
+        const next = [{ ...t, id: crypto.randomUUID() }, ...prev];
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        return next;
+      });
+    },
+    [],
+  );
+
+  const updateTask = useCallback((id: string, patch: Partial<Omit<Task, "id">>) => {
+    setTasks((prev) => {
+      const next = prev.map((t) => (t.id === id ? { ...t, ...patch } : t));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const deleteTask = useCallback((id: string) => {
+    setTasks((prev) => {
+      const next = prev.filter((t) => t.id !== id);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const toggleTask = useCallback((id: string) => {
+    setTasks((prev) => {
+      const next = prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const stats = useMemo(() => {
+    const completed = tasks.filter((t) => t.completed).length;
+    const remaining = tasks.length - completed;
+    const highPriority = tasks.filter((t) => t.priority === "high" && !t.completed).length;
+    const highPriorityTotal = tasks.filter((t) => t.priority === "high").length;
+    const highPriorityDone = tasks.filter((t) => t.priority === "high" && t.completed).length;
+    const completionRate = tasks.length ? Math.round((completed / tasks.length) * 100) : 0;
+    const overdue = tasks.filter((t) => !t.completed && t.due && new Date(t.due).getTime() < Date.now());
+    const score = Math.max(
+      0,
+      Math.min(100, Math.round(completionRate * 0.7 + (highPriorityTotal ? (highPriorityDone / highPriorityTotal) * 30 : 30) - overdue.length * 3)),
+    );
+    return { completed, remaining, highPriority, score, completionRate, highPriorityDone, highPriorityTotal, overdue };
+  }, [tasks]);
+
+  const value = useMemo(
+    () => ({ tasks, addTask, updateTask, deleteTask, toggleTask, stats }),
+    [tasks, addTask, updateTask, deleteTask, toggleTask, stats],
+  );
+
+  return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
+}
+
+export function useTasks() {
+  const ctx = useContext(TaskContext);
+  if (!ctx) throw new Error("useTasks must be used inside TaskProvider");
+  return ctx;
+}
+
+export function formatDue(due: string) {
+  if (!due) return "No deadline";
+  const d = new Date(due);
+  if (Number.isNaN(d.getTime())) return due;
+  const isToday = d.toDateString() === new Date().toDateString();
+  const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return isToday ? `Today · ${time}` : `${d.toLocaleDateString([], { month: "short", day: "numeric" })} · ${time}`;
+}
+
+export { persistKeyUnused as _unused } from "./noop";
