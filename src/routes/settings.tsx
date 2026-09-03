@@ -215,7 +215,7 @@ function SettingsPage() {
             </label>
             <button
               onClick={() => {
-                window.localStorage.removeItem("alora-lola-tasks");
+                window.localStorage.removeItem("alora-lola-tasks-v2");
                 window.location.reload();
               }}
               className="rounded-xl border border-rose/40 px-4 py-2 text-sm font-medium text-rose transition-colors hover:bg-rose/10"
