@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as EmailRouteImport } from './routes/email'
 import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as NotesRouteImport } from './routes/notes'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -37,6 +38,11 @@ const InsightsRoute = InsightsRouteImport.update({
   path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotesRoute = NotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AssistantRoute
   '/email': typeof EmailRoute
   '/insights': typeof InsightsRoute
+  '/notes': typeof NotesRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
   '/api/chat': typeof ApiChatRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/assistant': typeof AssistantRoute
   '/email': typeof EmailRoute
   '/insights': typeof InsightsRoute
+  '/notes': typeof NotesRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
   '/api/chat': typeof ApiChatRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/assistant': typeof AssistantRoute
   '/email': typeof EmailRoute
   '/insights': typeof InsightsRoute
+  '/notes': typeof NotesRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
   '/api/chat': typeof ApiChatRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/email'
     | '/insights'
+    | '/notes'
     | '/settings'
     | '/tasks'
     | '/api/chat'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/email'
     | '/insights'
+    | '/notes'
     | '/settings'
     | '/tasks'
     | '/api/chat'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/email'
     | '/insights'
+    | '/notes'
     | '/settings'
     | '/tasks'
     | '/api/chat'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AssistantRoute: typeof AssistantRoute
   EmailRoute: typeof EmailRoute
   InsightsRoute: typeof InsightsRoute
+  NotesRoute: typeof NotesRoute
   SettingsRoute: typeof SettingsRoute
   TasksRoute: typeof TasksRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssistantRoute: AssistantRoute,
   EmailRoute: EmailRoute,
   InsightsRoute: InsightsRoute,
+  NotesRoute: NotesRoute,
   SettingsRoute: SettingsRoute,
   TasksRoute: TasksRoute,
   ApiChatRoute: ApiChatRoute,
