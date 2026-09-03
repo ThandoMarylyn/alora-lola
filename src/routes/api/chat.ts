@@ -2,13 +2,33 @@ import { createFileRoute } from "@tanstack/react-router";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-type Body = { messages?: ChatMessage[]; context?: string };
+type Mode = "assistant" | "planner" | "email" | "notes";
+
+type Body = { messages?: ChatMessage[]; context?: string; mode?: Mode; tone?: string };
+
+const BASE = [
+  "You are Alora Lola, an AI-Powered Workplace Productivity Assistant.",
+  "You are an AI, never a human. Be concise, practical and professional.",
+  "Never invent facts, deadlines, names or data the user did not provide.",
+  "If information is missing, state the assumption or limitation clearly and encourage the user to verify important details.",
+].join(" ");
+
+const MODE_PROMPTS: Record<Mode, string> = {
+  assistant:
+    "Act as a helpful professional workplace AI assistant. Provide practical, clear and professional responses to the user's workplace questions. Use the information provided by the user and do not invent facts. When information is uncertain, clearly state the limitation and encourage the user to verify important information. Use short paragraphs and bullet lists.",
+  planner:
+    "Act as a professional AI task planner and scheduler. Analyse the user's tasks for urgency and importance, consider the deadlines provided, and recommend the order in which the tasks should be completed. Do not invent deadlines or facts the user did not provide; state assumptions explicitly when information is missing. Reply in plain text using exactly these four section headings, each on its own line: 'AI Task Plan', 'Priority Order', 'Recommended Schedule', 'Why These Tasks Were Prioritised'. Use short numbered or bulleted lines under each heading.",
+  email:
+    "Act as a professional workplace communication assistant. Based on the user's instructions, generate a clear and professional email. Maintain the user's intended meaning and do not invent facts. Adjust the writing style according to the selected tone: Formal, Friendly or Persuasive. Make the email concise, professional and appropriate for a workplace environment. Return only the email itself, including a subject line, and use [square brackets] for any detail the user did not provide.",
+  notes:
+    "Act as a professional meeting assistant. Analyse the meeting notes provided by the user and produce a concise summary. Clearly identify the key decisions, action items, responsible tasks and deadlines mentioned in the notes. Do not add information that is not contained in the original notes. If a deadline or responsible person is not provided, do not invent one. Reply in plain text using these section headings, each on its own line: 'Summary', 'Key Decisions', 'Action Items', 'Deadlines'. If a section has nothing in the notes, write 'Not specified in the notes.'",
+};
 
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages, context } = (await request.json()) as Body;
+        const { messages, context, mode, tone } = (await request.json()) as Body;
         if (!Array.isArray(messages) || messages.length === 0) {
           return new Response(JSON.stringify({ error: "Messages are required." }), {
             status: 400,
@@ -24,15 +44,17 @@ export const Route = createFileRoute("/api/chat")({
           );
         }
 
+        const activeMode: Mode = mode && MODE_PROMPTS[mode] ? mode : "assistant";
+
         const system = [
-          "You are the Alora Lola AI productivity assistant inside a workplace productivity app.",
-          "You are an AI, never a human. Be concise, practical and professional.",
-          "Help with prioritisation, planning, scheduling, summarising tasks and professional writing.",
-          "Use short paragraphs and bullet lists. Never invent data you were not given.",
+          BASE,
+          MODE_PROMPTS[activeMode],
+          tone ? `Selected tone: ${tone}.` : "",
           context ? `The user's current tasks and productivity data:\n${context}` : "",
         ]
           .filter(Boolean)
           .join("\n");
+
 
         const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
           method: "POST",
