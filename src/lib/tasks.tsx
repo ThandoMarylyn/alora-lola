@@ -73,6 +73,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>(SAMPLE_TASKS);
 
   useEffect(() => {
+    // Clear pre-release sample data that used stale placeholder dates.
+    for (const key of LEGACY_KEYS) window.localStorage.removeItem(key);
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (raw) {
       try {
@@ -81,8 +83,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       } catch {
         /* keep sample data */
       }
+    } else {
+      const fresh = createSampleTasks();
+      setTasks(fresh);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
     }
   }, []);
+
 
   const addTask = useCallback(
     (t: Omit<Task, "id">) => {
