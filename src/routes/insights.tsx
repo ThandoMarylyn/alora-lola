@@ -41,9 +41,25 @@ function InsightsPage() {
     ? Math.round((stats.highPriorityDone / stats.highPriorityTotal) * 100)
     : 0;
 
+  if (!tasks.length) {
+    return (
+      <AppShell title="Productivity Insights" subtitle="AI-generated analysis of your work patterns">
+        <div className="rounded-2xl border border-border bg-panel p-10 text-center">
+          <Sparkles className="mx-auto size-6 text-muted-foreground" />
+          <h3 className="mt-3 font-display text-lg font-bold">No insights yet</h3>
+          <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+            Add a few tasks in My Tasks and complete them — Alora Lola will then analyse your
+            completion trends, priorities and productivity score here.
+          </p>
+        </div>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell title="Productivity Insights" subtitle="AI-generated analysis of your work patterns">
       <div className="space-y-6">
+
         <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard label="Completed this week" value={weekTotal} hint="tasks" accent="mint" />
           <StatCard label="Completed this month" value={weekTotal * 4 - 3} hint="tasks" />
