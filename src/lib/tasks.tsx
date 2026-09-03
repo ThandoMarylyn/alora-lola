@@ -19,23 +19,35 @@ export type Task = {
   category?: string;
 };
 
-const STORAGE_KEY = "alora-lola-tasks";
+const STORAGE_KEY = "alora-lola-tasks-v2";
+const LEGACY_KEYS = ["alora-lola-tasks", "taskflow-tasks"];
 
-function today(hour: number, minute = 0) {
-  const d = new Date();
-  d.setHours(hour, minute, 0, 0);
+function toLocalInput(d: Date) {
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-const SAMPLE_TASKS: Task[] = [
-  { id: "t1", title: "Complete project report", priority: "high", due: today(15), completed: true, category: "Reporting" },
-  { id: "t2", title: "Respond to client emails", priority: "medium", due: today(11, 30), completed: true, category: "Inbox" },
-  { id: "t3", title: "Prepare presentation", priority: "high", due: today(14), completed: false, category: "Slides" },
-  { id: "t4", title: "Attend team meeting", priority: "low", due: today(16), completed: false, category: "Meeting" },
-  { id: "t5", title: "Review weekly performance", priority: "medium", due: today(17, 30), completed: false, category: "Analytics" },
-  { id: "t6", title: "Submit project documentation", priority: "medium", due: today(18), completed: false, category: "Docs" },
-];
+/** A time relative to "now", rounded to the nearest half hour — always realistic. */
+function inHours(hours: number) {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() + Math.round(hours * 60), 0, 0);
+  d.setMinutes(d.getMinutes() < 30 ? 0 : 30, 0, 0);
+  return toLocalInput(d);
+}
+
+function createSampleTasks(): Task[] {
+  return [
+    { id: "t1", title: "Complete project report", priority: "high", due: inHours(-3), completed: true, category: "Reporting" },
+    { id: "t2", title: "Respond to client emails", priority: "medium", due: inHours(-1.5), completed: true, category: "Inbox" },
+    { id: "t3", title: "Prepare presentation", priority: "high", due: inHours(2), completed: false, category: "Slides" },
+    { id: "t4", title: "Attend team meeting", priority: "low", due: inHours(4), completed: false, category: "Meeting" },
+    { id: "t5", title: "Review weekly performance", priority: "medium", due: inHours(24), completed: false, category: "Analytics" },
+    { id: "t6", title: "Submit project documentation", priority: "medium", due: inHours(30), completed: false, category: "Docs" },
+  ];
+}
+
+const SAMPLE_TASKS: Task[] = createSampleTasks();
+
 
 type TaskContextValue = {
   tasks: Task[];
@@ -61,6 +73,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>(SAMPLE_TASKS);
 
   useEffect(() => {
+    // Clear pre-release sample data that used stale placeholder dates.
+    for (const key of LEGACY_KEYS) window.localStorage.removeItem(key);
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (raw) {
       try {
@@ -69,8 +83,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       } catch {
         /* keep sample data */
       }
+    } else {
+      const fresh = createSampleTasks();
+      setTasks(fresh);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
     }
   }, []);
+
 
   const addTask = useCallback(
     (t: Omit<Task, "id">) => {
